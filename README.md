@@ -1,4 +1,6 @@
 **Calculadora Android**
+
+
 **Descrição**
   Este projeto é uma calculadora desenvolvida em Android Studio utilizando a linguagem Java. O projeto começou como um trabalho acadêmico básico e foi progressivamente aprimorado com novas funcionalidades e uma interface de usuário mais intuitiva, inspirada nas calculadoras de celulares modernos.
 
