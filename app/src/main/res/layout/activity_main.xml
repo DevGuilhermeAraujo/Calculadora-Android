@@ -29,7 +29,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/txtHistorico"
+            android:id="@+id/txtOperacaoAtual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -40,7 +40,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/txtOperacaoAtual"
+            android:id="@+id/txtResultado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -329,17 +329,16 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
-                android:text=","
+                android:text="."
                 android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/btn"
+            <ImageButton
+                android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
-                android:padding="10dp"
                 app:srcCompat="@android:drawable/ic_input_delete" />
 
             <Button

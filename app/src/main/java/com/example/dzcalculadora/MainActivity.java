@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 123;
 
     private TextView txtOperacaoAtual;
-    private TextView txtHistorico;
+    private TextView txtResultado;
     private StringBuilder currentInput = new StringBuilder();
     private float firstValue = 0;
     private float secondValue = 0;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txtOperacaoAtual = findViewById(R.id.txtOperacaoAtual);
-        txtHistorico = findViewById(R.id.txtHistorico);
+        txtResultado = findViewById(R.id.txtResultado);
 
         // Verificar se a permissão WRITE_EXTERNAL_STORAGE já foi concedida
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         setNumberButtonListeners();
         setOperatorButtonListeners();
+        setDecimalButtonListeners();
         setEqualsButtonListener();
         setClearButtonListener();
         setPercentageButtonListener(); // Adicionando a nova funcionalidade de Porcentagem
@@ -68,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         View.OnClickListener listener = v -> {
             Button button = (Button) v;
+            String buttonText = button.getText().toString();
+
             if (isNewOperation) {
-                txtOperacaoAtual.setText("");
-                currentInput.setLength(0);
                 isNewOperation = false;
             }
-            currentInput.append(button.getText().toString());
-            txtOperacaoAtual.setText(currentInput);
+            currentInput.append(buttonText);
+            txtOperacaoAtual.append(buttonText);
         };
 
         for (int id : numberButtonIds) {
@@ -91,8 +92,7 @@ public class MainActivity extends AppCompatActivity {
             Button button = (Button) v;
             operator = button.getText().toString();
             firstValue = Float.parseFloat(currentInput.toString());
-            txtHistorico.setText(currentInput + operator);
-            txtOperacaoAtual.setText(null);
+            txtOperacaoAtual.setText(currentInput + operator);
             currentInput.setLength(0);
             isNewOperation = false;
         };
@@ -102,15 +102,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setDecimalButtonListeners() {
+        int commaButtonId = R.id.btnVirgula;
+
+        View.OnClickListener listener = v -> {
+            // Verifica se já existe uma vírgula no currentInput
+            if (!currentInput.toString().contains(".")) {
+                Button button = (Button) v;
+                String buttonText = button.getText().toString();
+
+                if (isNewOperation) {
+                    isNewOperation = false;
+                }
+
+                currentInput.append(buttonText);
+                txtOperacaoAtual.append(buttonText);
+            }
+        };
+
+        findViewById(commaButtonId).setOnClickListener(listener);
+    }
+
     private void setEqualsButtonListener() {
         findViewById(R.id.btnIgual).setOnClickListener(v -> {
             if (!isNewOperation) {
                 secondValue = Float.parseFloat(currentInput.toString());
                 float result = calculateResult(firstValue, secondValue, operator);
-                txtHistorico.setText(txtHistorico.getText().toString() + currentInput.toString() + " = ");
                 txtOperacaoAtual.setText(String.valueOf(result));
+                firstValue = result;
+                txtResultado.setText("");
                 currentInput.setLength(0);
-                isNewOperation = true;
+                currentInput.append(result);
+                isNewOperation = false;
             }
         });
     }
@@ -122,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             secondValue = 0;
             operator = "";
             txtOperacaoAtual.setText("");
-            txtHistorico.setText("");
+            txtResultado.setText("");
             isNewOperation = true;
         });
     }
